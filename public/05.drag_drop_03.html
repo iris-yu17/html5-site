@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" href="favicon.ico">
+    <style>
+        .container {
+            position: absolute;
+        }
+        .ball {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-color: #c01616;
+            border-radius: 50%;
+            left: 100px;
+            top: 100px;
+        }
+
+        .rect {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            background-color: #334fb0;
+
+            left: 500px;
+            top: 200px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="ball" draggable="true"></div>
+
+
+    <div class="rect"></div>
+</div>
+
+
+<script>
+    const ball = document.querySelector('.ball');
+    const rect = document.querySelector('.rect');
+
+    const listener = (event)=>{
+        console.log(event.type, event.target);
+
+    }
+    ball.addEventListener('dragstart', listener);
+    // ball.addEventListener('drag', listener);
+    ball.addEventListener('dragend', listener);
+
+
+    rect.addEventListener('dragenter', listener);
+    rect.addEventListener('dragleave', listener);
+    rect.addEventListener('dragover', event=>{
+        event.preventDefault();
+    });
+    rect.addEventListener('drop', event=>{
+        const b1 = ball.cloneNode(true);
+        b1.style.position = 'static';
+        b1.style.display = 'inline-block';
+        rect.appendChild(b1);
+    });
+
+</script>
+
+</body>
+</html>
