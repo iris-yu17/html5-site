@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <button id="connectBtn">連線</button>
+    <button id="disconnectBtn">斷線</button>
+    <br>
+    <input type="text" id="inp">
+    <button id="sendBtn">送出</button>
+    <br>
+    <textarea id="ta" cols="30" rows="10" readonly></textarea>
+    <br>
+
+
+
+    <script>
+        let ws;
+        const ta = document.querySelector('#ta');
+        const inp = document.querySelector('#inp');
+        const connectBtn = document.querySelector('#connectBtn');
+        const disconnectBtn = document.querySelector('#disconnectBtn');
+        const sendBtn = document.querySelector('#sendBtn');
+
+        const wsOpen = (event) => {
+            console.log(event);
+            ta.value += '已連線 --- \n';
+            connectBtn.style.display = 'none';
+            disconnectBtn.style.display = 'block';
+            sendBtn.style.display = 'block';
+        }
+        const wsMessage = (event) => {
+            ta.value += '接收: ' + event.data + '\n';;
+        }
+
+        const wsClose = (event) => {
+            ta.value += '已關閉連線 ---\n';
+            connectBtn.style.display = 'block';
+            disconnectBtn.style.display = 'none';
+            sendBtn.style.display = 'none';
+        }
+
+        document.addEventListener('click', (event) => {
+            switch (event.target.id) {
+                case 'connectBtn':
+                    // js原生就有webSocket，用new建立
+                    // ws = new WebSocket('ws://echo.websocket.org/');
+                    ws = new WebSocket('ws://localhost:3000');
+                    // 這邊是cd func，不用wsOpen()加括號是呼叫
+                    ws.addEventListener('open', wsOpen);
+                    ws.addEventListener('message', wsMessage);
+                    ws.addEventListener('close', wsClose);
+                    break;
+                case 'disconnectBtn':
+                    if (ws && ws.readyState === 1) {
+                        ws.close();
+                    }
+                    break;
+                case 'sendBtn':
+                    if (ws && ws.readyState === 1) {
+                        ws.send(inp.value);
+                    }
+                    break;
+            }
+
+
+        });
+
+    </script>
+</body>
+
+</html>
