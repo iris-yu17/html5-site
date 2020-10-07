@@ -1,0 +1,6 @@
+
+https://blog.xuite.net/cadmus.lin/yo/43386562
+
+netstat -nao | find ":3030"
+
+tasklist /fi "pid eq 7024"
